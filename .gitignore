@@ -192,3 +192,12 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Dados e outputs
+/data/
+
+# Configurações sensíveis
+/config/config.yaml
+
+# Notebooks temporários
+/notebooks/.ipynb_checkpoints/
