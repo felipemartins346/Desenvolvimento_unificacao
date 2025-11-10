@@ -1,0 +1,30 @@
+[1028/093651.497:ERROR:browser_host_impl.cc(234)] Creating a windowless browser without setting CefSettings.windowless_rendering_enabled may result in reduced performance or runtime errors.
+[1028/093651.499:ERROR:context.cc(211)] The cache_path directory (C:\Users\felipemartins\OneDrive - Hypera\Área de Trabalho\CRM - 2025\10.Meta PLR\02.Melhorias e Incidentes\01.Desenho\cache\path1) is not a child of the root_cache_path directory (C:\Users\felipemartins\AppData\Local\Temp\BPM2\CefSharpCache)
+[1028/093651.499:ERROR:context.cc(235)] The cache_path is invalid. Defaulting to in-memory storage.
+[1028/094250.643:ERROR:browser_host_impl.cc(234)] Creating a windowless browser without setting CefSettings.windowless_rendering_enabled may result in reduced performance or runtime errors.
+[1028/094250.643:ERROR:context.cc(211)] The cache_path directory (C:\Users\felipemartins\OneDrive - Hypera\Área de Trabalho\CRM - 2025\10.Meta PLR\02.Melhorias e Incidentes\01.Desenho\cache\path1) is not a child of the root_cache_path directory (C:\Users\felipemartins\AppData\Local\Temp\BPM2\CefSharpCache)
+[1028/094250.644:ERROR:context.cc(235)] The cache_path is invalid. Defaulting to in-memory storage.
+[1028/094251.002:INFO:CONSOLE(5)] "ERROR TypeError: Cannot read property 'subscriptionType' of undefined", source: file:///C:/Program%20Files/Bizagi/Bizagi%20Modeler/ModelExplorer/model-explorer.js (5)
+[1028/142716.860:WARNING:dns_config_service_win.cc(700)] Failed to read DnsConfig.
+[1028/142716.855:WARNING:dns_config_service_win.cc(700)] Failed to read DnsConfig.
+[1028/142719.525:WARNING:dns_config_service_win.cc(700)] Failed to read DnsConfig.
+[1028/142719.530:WARNING:dns_config_service_win.cc(700)] Failed to read DnsConfig.
+[1028/142721.868:WARNING:dns_config_service_win.cc(700)] Failed to read DnsConfig.
+[1028/142721.890:WARNING:dns_config_service_win.cc(700)] Failed to read DnsConfig.
+[1028/142724.577:WARNING:dns_config_service_win.cc(700)] Failed to read DnsConfig.
+[1028/142724.577:WARNING:dns_config_service_win.cc(700)] Failed to read DnsConfig.
+[1028/142726.895:WARNING:dns_config_service_win.cc(700)] Failed to read DnsConfig.
+[1028/142726.911:WARNING:dns_config_service_win.cc(700)] Failed to read DnsConfig.
+[1028/142729.592:WARNING:dns_config_service_win.cc(700)] Failed to read DnsConfig.
+[1028/142729.592:WARNING:dns_config_service_win.cc(700)] Failed to read DnsConfig.
+[1028/143613.788:ERROR:dns_config_service_win.cc(793)] DNS config watch failed.
+[1028/143613.789:ERROR:dns_config_service_win.cc(793)] DNS config watch failed.
+[1103/103432.924:ERROR:browser_host_impl.cc(234)] Creating a windowless browser without setting CefSettings.windowless_rendering_enabled may result in reduced performance or runtime errors.
+[1103/103432.926:ERROR:context.cc(211)] The cache_path directory (C:\Users\felipemartins\OneDrive - Hypera\Área de Trabalho\CRM - 2025\10.Meta PLR\02.Melhorias e Incidentes\01.Desenho\cache\path1) is not a child of the root_cache_path directory (C:\Users\felipemartins\AppData\Local\Temp\BPM2\CefSharpCache)
+[1103/103432.926:ERROR:context.cc(235)] The cache_path is invalid. Defaulting to in-memory storage.
+[1103/103451.275:ERROR:browser_host_impl.cc(234)] Creating a windowless browser without setting CefSettings.windowless_rendering_enabled may result in reduced performance or runtime errors.
+[1103/103451.275:ERROR:context.cc(211)] The cache_path directory (C:\Users\felipemartins\OneDrive - Hypera\Área de Trabalho\CRM - 2025\10.Meta PLR\02.Melhorias e Incidentes\01.Desenho\cache\path1) is not a child of the root_cache_path directory (C:\Users\felipemartins\AppData\Local\Temp\BPM2\CefSharpCache)
+[1103/103451.275:ERROR:context.cc(235)] The cache_path is invalid. Defaulting to in-memory storage.
+[1103/103451.838:INFO:CONSOLE(5)] "ERROR TypeError: Cannot read property 'subscriptionType' of undefined", source: file:///C:/Program%20Files/Bizagi/Bizagi%20Modeler/ModelExplorer/model-explorer.js (5)
+[1103/105913.223:ERROR:dns_config_service_win.cc(793)] DNS config watch failed.
+[1103/105913.223:ERROR:dns_config_service_win.cc(793)] DNS config watch failed.
