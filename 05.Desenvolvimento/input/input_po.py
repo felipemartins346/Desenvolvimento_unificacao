@@ -12,6 +12,7 @@
 
 import pandas as pd
 from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType, StructField, StringType, DoubleType
 
 spark = SparkSession.builder.getOrCreate()
 
@@ -21,18 +22,34 @@ SHEET_NAME = "PO"
 print(f"📄 Arquivo Excel: {EXCEL_PATH}")
 print(f"📑 Aba alvo: {SHEET_NAME}")
 
-# Lê a aba PO como está
-df_po_pd = pd.read_excel(EXCEL_PATH, sheet_name=SHEET_NAME)
+# Schema esperado para a aba PO
+schema_po = StructType([
+    StructField("PO", StringType(), True),
+    StructField("RC", StringType(), True),
+    StructField("FOLHA_DE_SERVICO", StringType(), True),
+    StructField("VALOR_PO", StringType(), True)  # se quiser numérico, podemos depois fazer cast em Spark
+])
 
-# Corrigir: converter tudo para string para evitar erros de Arrow
-df_po_pd = df_po_pd.astype(str)
+# Lê a aba PO
+df_po_pd = pd.read_excel(EXCEL_PATH, sheet_name=SHEET_NAME, dtype=str)
 
-print("✅ PO lida via pandas:")
-print(df_po_pd.shape)
-display(df_po_pd.head(5))
+print("📊 Shape lido da aba PO:", df_po_pd.shape)
+print("📎 Colunas lidas:", list(df_po_pd.columns))
 
-# Converte para Spark DataFrame
-df_po_spark_raw = spark.createDataFrame(df_po_pd)
+if df_po_pd.empty:
+    print("⚠️ Atenção: a aba PO está sem linhas de dados. Criando DataFrame Spark vazio com schema definido.")
+    
+    # Cria DataFrame Spark vazio com schema explícito
+    df_po_spark_raw = spark.createDataFrame([], schema_po)
+else:
+    # Garante tudo como string (evita Arrow bizarro)
+    df_po_pd = df_po_pd.astype(str)
+
+    print("✅ PO lida via pandas com linhas de dados:")
+    display(df_po_pd.head(5))
+
+    # Converte para Spark DataFrame com schema explícito
+    df_po_spark_raw = spark.createDataFrame(df_po_pd, schema=schema_po)
 
 print("✅ DataFrame Spark (raw) criado:")
 df_po_spark_raw.printSchema()

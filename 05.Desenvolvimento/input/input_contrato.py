@@ -8,106 +8,107 @@
 
 # COMMAND ----------
 
-# Bloco 2: Normalização dos nomes das colunas de dContratos
+# Bloco 1: Leitura da aba dContratos
 
-rename_map_dcont = {
-    "Unnamed: 0":  "col_00",
-    "Unnamed: 1":  "col_01",
-    "Unnamed: 2":  "col_02",
-    "Unnamed: 3":  "col_03",
-    "Unnamed: 4":  "col_04",
-    "Unnamed: 5":  "col_05",
-    "Unnamed: 6":  "col_06",
-    "Unnamed: 7":  "col_07",
-    "Unnamed: 8":  "col_08",
-    "Unnamed: 9":  "col_09",
-    "Unnamed: 10": "col_10",
-    "Unnamed: 11": "col_11",
+import pandas as pd
+from pyspark.sql import SparkSession
 
-    "relacionado com a tabela fPlanejado": "relacionado_fplanejado",
+spark = SparkSession.builder.getOrCreate()
 
-    "Unnamed: 13": "col_13",
-    "Unnamed: 14": "col_14",
-    "Unnamed: 15": "col_15",
-    "Unnamed: 16": "col_16",
-    "Unnamed: 17": "col_17",
-    "Unnamed: 18": "col_18",
-    "Unnamed: 19": "col_19",
+EXCEL_PATH = "/Volumes/dev_desenvolvimento/dev_volume/arquivos_financeiros/excell/Dados Financeiros.xlsx"
+SHEET_NAME = "dContratos "   # <-- ATENÇÃO: existe espaço no final da aba dentro do Excel
 
-    "Percentual cobrado para pagto de imposto pelo fornecedor": "perc_imposto_fornecedor",
-    "Fórmula = Valor_total_sem_imposto / Valor_perc_cobrado_fornec": "formula_base_calculo",
+print(f"📄 Arquivo Excel: {EXCEL_PATH}")
+print(f"📑 Aba alvo: {SHEET_NAME!r}")  # usa !r para mostrar o espaço
 
-    "Unnamed: 22": "col_22",
+df_ct_pd = pd.read_excel(
+    EXCEL_PATH,
+    sheet_name=SHEET_NAME,
+    dtype=str
+)
 
-    "Valor_cobrado_fornecedor*Perc_tributos": "valor_cobrado_fornecedor_perc_tributos",
+print("📊 Shape da dContratos:", df_ct_pd.shape)
+display(df_ct_pd.head(5))
 
-    "Unnamed: 24": "col_24",
-    "Unnamed: 25": "col_25",
-    "Unnamed: 26": "col_26",
-    "Unnamed: 27": "col_27",
-    "Unnamed: 28": "col_28"
-}
-
-df_dcont_renamed = df_dcont_spark_raw
-for old_name, new_name in rename_map_dcont.items():
-    if old_name in df_dcont_renamed.columns:
-        df_dcont_renamed = df_dcont_renamed.withColumnRenamed(old_name, new_name)
-
-print("✅ Colunas renomeadas (dContratos):")
-print(df_dcont_renamed.columns)
-df_dcont_renamed.printSchema()
-df_dcont_renamed.show(5, truncate=False)
+if df_ct_pd.empty:
+    raise Exception("❌ A aba dContratos está vazia. Verifique o arquivo Excel.")
 
 
 # COMMAND ----------
 
-# Bloco 3: Cast de todas as colunas para string (dContratos)
+# Bloco 2: Normalização dos nomes das colunas
+
+rename_map_ct = {
+    "ID_contrato_elaw": "id_contrato_elaw",
+    "fornecedor": "fornecedor",
+    "CNPJ_Fornecedor": "cnpj_fornecedor",
+    "Contratante": "contratante",
+    "CNPJ_Contratante": "cnpj_contratante",
+    "PROPOSTA": "proposta",
+    "Data inicio_contrato": "data_inicio_contrato",
+    "Data fim_contrato": "data_fim_contrato",
+    "Indice_Reajuste": "indice_reajuste",
+    "ID_Item_Contrato": "id_item_contrato",
+    "Item do contrato": "item_contrato",
+    "PRODUTO": "produto",
+    "ID Item Planejado": "id_item_planejado",
+    "Data inicio_item": "data_inicio_item",
+    "Data fim_item": "data_fim_item",
+    "Tempo_item_contrato": "tempo_item_contrato",
+    "Qtd_item": "qtd_item",
+    "unid_medida": "unidade_medida",
+    "Preco_unit": "preco_unit",
+    "Valor_total_sem_imposto": "valor_total_sem_imposto",
+    "Valor_perc_cobrado_fornec": "valor_perc_cobrado_fornec",
+    "Valor_base_calculo_imposto": "valor_base_calculo_imposto",
+    "Perc_tributos": "perc_tributos",
+    "Valor_tributos": "valor_tributos",
+    "Valor_total_bruto_item": "valor_total_bruto_item",
+    "tipo de cobrança": "tipo_cobranca",
+    "Valor consumido": "valor_consumido",
+    "ID_Orcamento /Ordem (índice)": "id_orcamento",
+    "Observação": "observacao"
+}
+
+df_ct_renamed = df_ct_pd.rename(columns=rename_map_ct)
+
+print("📑 Colunas após rename:")
+print(list(df_ct_renamed.columns))
+display(df_ct_renamed.head(5))
+
+
+# COMMAND ----------
+
+# Bloco 3: Conversão para Spark + cast para string
+
+df_ct_spark = spark.createDataFrame(df_ct_renamed.astype(str))
 
 from pyspark.sql import functions as F
 
-df_dcont_all_string = df_dcont_renamed.select(
-    [F.col(c).cast("string").alias(c) for c in df_dcont_renamed.columns]
+df_ct_all_string = df_ct_spark.select(
+    [F.col(c).cast("string").alias(c) for c in df_ct_spark.columns]
 )
 
-print("✅ Todas as colunas convertidas para string (dContratos):")
-df_dcont_all_string.printSchema()
-df_dcont_all_string.show(5, truncate=False)
+print("📘 Schema final (tudo string):")
+df_ct_all_string.printSchema()
+df_ct_all_string.show(5, truncate=False)
 
 
 # COMMAND ----------
 
-# Bloco 4: Escrita da dContratos em Parquet
+# Bloco 4: Escrita em Parquet
 
 BASE_PARQUET_DIR = "/Volumes/dev_desenvolvimento/dev_volume/arquivos_financeiros/parquet"
-TARGET_PATH_DCONT = f"{BASE_PARQUET_DIR}/dContratos"
+TARGET_PATH = f"{BASE_PARQUET_DIR}/dContratos"
 
-print(f"💾 Gravando dContratos em Parquet em: {TARGET_PATH_DCONT}")
+print(f"💾 Gravando dContratos em: {TARGET_PATH}")
 
 (
-    df_dcont_all_string
+    df_ct_all_string
         .write
         .mode("overwrite")
-        .parquet(TARGET_PATH_DCONT)
+        .parquet(TARGET_PATH)
 )
 
 print("✅ Parquet da dContratos gravado com sucesso.")
-
-
-# COMMAND ----------
-
-# Bloco 4: Escrita da PO em Parquet
-
-BASE_PARQUET_DIR = "/Volumes/dev_desenvolvimento/dev_volume/arquivos_financeiros/parquet"
-TARGET_PATH_PO = f"{BASE_PARQUET_DIR}/PO"
-
-print(f"💾 Gravando PO em Parquet em: {TARGET_PATH_PO}")
-
-(
-    df_po_all_string
-        .write
-        .mode("overwrite")
-        .parquet(TARGET_PATH_PO)
-)
-
-print("✅ Parquet da PO gravado com sucesso.")
 
